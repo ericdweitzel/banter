@@ -1,0 +1,45 @@
+@name Banter
+@persist Scope:number Group:string NameColor:vector Prefix:string
+runOnChat(1)
+runOnSignal("_BANTER_ACTION", Scope, 1)
+runOnSignal("_BANTER_MESSAGE", Scope, 1)
+hideChat(1)
+
+Scope = 2
+Group = ""
+NameColor = vec(255, 255, 255)
+Prefix = ""
+
+function void banterJoinGroup(GROUP:string) {
+    dsJoinGroup(GROUP)
+
+    R = array(vec(255, 255, 255), "[", vec(0, 255,255), "Banter", vec(255, 255, 255), "] ", vec(255, 0, 255), owner():name(), vec(255, 255, 255), " joined ", vec(255, 255, 0), Group)
+    dsSend("_BANTER_ACTION", Group, Scope, R)
+}
+
+function void banterSendMessage(MESSAGE:string) {
+    R = array(vec(255, 255, 255), "[", NameColor, owner():name(), vec(255, 255, 255), "] ", MESSAGE)
+    dsSend("_BANTER_MESSAGE", Group, Scope, R)
+}
+
+if (first() | dupefinished()) {
+    dsSetScope(Scope)
+
+    banterJoinGroup(Group)
+}
+
+if (chatClk(owner())) {
+	if (owner():lastSaid()[1] == Prefix) {
+		banterSendMessage(owner():lastSaid():sub(2))
+	} else { hideChat(0) }
+}
+
+if (dsClk("_BANTER_ACTION")) {
+    printColor(dsGetArray())
+    owner():soundPlay("_BANTER_SOUND_ACTION", 0, "ui/buttonclick.wav")
+}
+
+if (dsClk("_BANTER_MESSAGE")) {
+    printColor(dsGetArray())
+    owner():soundPlay("BANTER_SOUND_MESSAGE", 0, "ui/buttonrollover.wav")
+}
