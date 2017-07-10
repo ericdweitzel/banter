@@ -6,19 +6,19 @@ runOnSignal("_BANTER_MESSAGE", Scope, 1)
 hideChat(1)
 
 Scope = 2
-Group = ""
+Group = "default"
 NameColor = vec(255, 255, 255)
-Prefix = ""
+Prefix = "~"
 
 function void banterJoinGroup(GROUP:string) {
     dsJoinGroup(GROUP)
 
-    R = array(vec(255, 255, 255), "[", vec(0, 255,255), "Banter", vec(255, 255, 255), "] ", vec(255, 0, 255), owner():name(), vec(255, 255, 255), " joined ", vec(255, 255, 0), Group)
+    R = array(vec(255, 255, 255), "[", time("min"), ":", time("sec"), "]", "[", vec(0, 255,255), "Banter", vec(255, 255, 255), "] ", vec(255, 0, 255), owner():name(), vec(255, 255, 255), " joined ", vec(255, 255, 0), Group)
     dsSend("_BANTER_ACTION", Group, Scope, R)
 }
 
 function void banterSendMessage(MESSAGE:string) {
-    R = array(vec(255, 255, 255), "[", NameColor, owner():name(), vec(255, 255, 255), "] ", MESSAGE)
+    R = array(vec(255, 255, 255), vec(255, 255, 255), "[", time("min"), ":", time("sec"), "]", "[", NameColor, owner():name(), vec(255, 255, 255), "] ", MESSAGE)
     dsSend("_BANTER_MESSAGE", Group, Scope, R)
 }
 
